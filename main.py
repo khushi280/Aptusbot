@@ -21,50 +21,6 @@ from app.core.redis_config import (
     connect_redis,
 )
 
-print("testing")
-def listen_to_messages_for_cache_refresh():
-    redis_client = connect_redis()
-    pubsub = redis_client.pubsub()
-    pubsub.subscribe("role-update", "user-update-event", "tool_cache")
-    for message in pubsub.listen():
-        if message["type"] != "message":
-            # we have to skip the confirmation messages
-            # because we need the the actual data
-            continue
-        channel = message["channel"]
-        if channel == "role-update":
-            cache_permissions()
-            cache_user_dept_gpt_store_mapping()
-            cache_user_id_with_roles()
-        if channel == "user-update-event":
-            cache_user_id_with_roles()
-            cache_user_dept_gpt_store_mapping()
-        if channel == "tool_cache":
-            generate_user_payload(json.loads(message["data"]))
-
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    print("starting")
-    init_db()
-    # Inital cache
-    cache_user_id_with_roles()
-    cache_permissions()
-    cache_user_dept_gpt_store_mapping()
-    print("started")
-    def delayed_cache_refresh():
-        time.sleep(2)
-        print("Running delayed user_dept_gpt_store_mapping cache refresh...")
-        try:
-            cache_user_dept_gpt_store_mapping()
-        except Exception as e:
-            print(f"Temporary cache refresh failed: {e}")
-
-    threading.Thread(target=delayed_cache_refresh, daemon=True).start()
-
-    thread = threading.Thread(target=listen_to_messages_for_cache_refresh, daemon=True)
-    thread.start()
-    yield
 
 
 app = FastAPI(
