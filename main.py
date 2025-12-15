@@ -20,6 +20,7 @@ from app.core.redis_config import (
     cache_user_id_with_roles,
     connect_redis,
 )
+print("test")
 
 
 
@@ -57,6 +58,7 @@ async def root(db: Session = Depends(get_db)):
         "message": "This is the demo Root endpoint",
         "db": db_status
     }
+
 
 
 
