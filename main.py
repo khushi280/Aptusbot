@@ -8,6 +8,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 from fastapi import FastAPI,APIRouter
+print("test")
 
 from app.core.database import get_db
 from sqlalchemy import text
@@ -58,6 +59,7 @@ async def root(db: Session = Depends(get_db)):
         "message": "This is the demo Root endpoint",
         "db": db_status
     }
+
 
 
 
