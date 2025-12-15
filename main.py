@@ -22,6 +22,7 @@ from app.core.redis_config import (
 )
 
 print("testing")
+print("test")
 def listen_to_messages_for_cache_refresh():
     redis_client = connect_redis()
     pubsub = redis_client.pubsub()
@@ -101,6 +102,7 @@ async def root(db: Session = Depends(get_db)):
         "message": "This is the demo Root endpoint",
         "db": db_status
     }
+
 
 
 
