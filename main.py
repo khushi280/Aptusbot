@@ -9,7 +9,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 from fastapi import FastAPI,APIRouter
 
-from app.core.database import get_db
+
 from sqlalchemy import text
 from app.api.route_main import api_router
 from app.api.routes.user_payload import generate_user_payload
@@ -101,6 +101,7 @@ async def root(db: Session = Depends(get_db)):
         "message": "This is the demo Root endpoint",
         "db": db_status
     }
+
 
 
 
